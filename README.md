@@ -1,38 +1,41 @@
 # SquishyGrid
 
-First Passage Percolation (FPP) simulator with discrete distributions and convex polygon target shapes.
+First Passage Percolation (FPP) simulator with discrete probability distributions and optimization algorithms.
 
 ## Structure
 
 ### C++ Core
 - `ball.cpp` - Main FPP simulator with discrete distributions
-- `grad_all_angle.cpp` - Gradient-based optimization
+- `ball_polygon.cpp` - FPP simulator with polygon target shapes
+- `grad_all_angle.cpp` - Gradient-based distribution optimization
 - `diff_n.cpp` - Grid size analysis
+- `ball_spfa.cpp` - SPFA algorithm variant
 
 ### Experiments
 - `2-point/`, `3-point/`, `4-point/` - Multi-point correlation studies
-- `monotone/` - Monotonicity constraints
+- `monotone/` - Monotonicity constraint experiments
 - `U01/`, `Gamma22/`, `Gamma1010/` - Distribution comparisons
 - `test_width/` - Width parameter testing
-
-### Python Polygon System
-- `shapes/targets.py` - Polygon definitions (triangle, trapezoid, square)
-- `geom/minkowski.py` - Minkowski gauge computation
-- `grid/highways.py` - Highway construction and Dijkstra
-- `integration_demo.py` - C++ weight export
 
 ## Usage
 
 ### C++ FPP
 ```bash
+# Standard FPP with discrete distributions
 g++ -O3 -std=c++17 ball.cpp -o ball
 ./ball
-```
 
-### Python Polygons
-```bash
-pip install numpy scipy networkx matplotlib
-python integration_demo.py
+# FPP with polygon target shapes
+g++ -O3 -std=c++17 ball_polygon.cpp -o ball_polygon
+./ball_polygon triangle    # or trapezoid, square
+
+# Distribution optimization
+g++ -O3 -std=c++17 grad_all_angle.cpp -o grad_all_angle
+./grad_all_angle
+
+# Grid size analysis
+g++ -O3 -std=c++17 diff_n.cpp -o diff_n
+./diff_n
 ```
 
 ## Algorithms
@@ -41,7 +44,7 @@ python integration_demo.py
 - 2D lattice with 4-neighbor connectivity
 - Discrete probability distributions for edge weights
 - Dijkstra's algorithm for shortest paths
-- Modular array indexing for memory efficiency
+- Modular array indexing for memory efficiency (30K×1K grid)
 
 ### Distribution Classes
 ```cpp
@@ -51,37 +54,6 @@ class Rand {
 
 class Plan : public Rand {
     vector<double> p, v;  // probabilities and values
+    std::discrete_distribution<> distribution;
 };
-```
-
-### Polygon Targeting
-- Minkowski gauge: ρ_P(v) = min{λ ≥ 0 : v ∈ λP}
-- Linear programming via scipy.optimize.linprog
-- Highway construction with gauge-based weights
-- Weight matrix export for C++ integration
-
-## Output Files
-- `output_ball.txt` - Distance field coordinates
-- `output_angle_len.txt` - Angular measurements
-- `record.txt` - Optimization logs
-- `*_weights.txt` - Exported weight matrices (triangle, trapezoid, square)
-
-## Available Shapes
-- `triangle_equilateral(scale)` - Equilateral triangle
-- `trapezoid_sym(scale_x, scale_y)` - Symmetric trapezoid  
-- `square(scale)` - Square
-
-## Custom Polygons
-```python
-from shapes.targets import triangle_equilateral, square
-from grid.highways import build_highways_weights
-
-# Use predefined shapes
-verts = square(scale=1.0)
-
-# Or define custom vertices (must contain origin)
-verts = np.array([(x1,y1), (x2,y2), ...])
-
-# Generate weights
-weight_dict = build_highways_weights(verts, grid_radius=80, num_directions=100)
 ```
