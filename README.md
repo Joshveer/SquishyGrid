@@ -16,7 +16,7 @@ First Passage Percolation (FPP) simulator with discrete distributions and convex
 - `test_width/` - Width parameter testing
 
 ### Python Polygon System
-- `shapes/targets.py` - Polygon definitions
+- `shapes/targets.py` - Polygon definitions (triangle, trapezoid, square)
 - `geom/minkowski.py` - Minkowski gauge computation
 - `grid/highways.py` - Highway construction and Dijkstra
 - `integration_demo.py` - C++ weight export
@@ -64,14 +64,22 @@ class Plan : public Rand {
 - `output_ball.txt` - Distance field coordinates
 - `output_angle_len.txt` - Angular measurements
 - `record.txt` - Optimization logs
-- `*_weights.txt` - Exported weight matrices
+- `*_weights.txt` - Exported weight matrices (triangle, trapezoid, square)
+
+## Available Shapes
+- `triangle_equilateral(scale)` - Equilateral triangle
+- `trapezoid_sym(scale_x, scale_y)` - Symmetric trapezoid  
+- `square(scale)` - Square
 
 ## Custom Polygons
 ```python
-from shapes.targets import triangle_equilateral
+from shapes.targets import triangle_equilateral, square
 from grid.highways import build_highways_weights
 
-# Define vertices (must contain origin)
+# Use predefined shapes
+verts = square(scale=1.0)
+
+# Or define custom vertices (must contain origin)
 verts = np.array([(x1,y1), (x2,y2), ...])
 
 # Generate weights

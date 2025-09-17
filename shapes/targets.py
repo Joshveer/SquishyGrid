@@ -21,3 +21,13 @@ def trapezoid_sym(scale_x=1.0, scale_y=1.0):
         (-0.6 * scale_x, -1.0 * scale_y)
     ], dtype=float)
     return verts
+
+def square(scale=1.0):
+    # Square centered at origin
+    verts = np.array([
+        (-1.0, -1.0),
+        ( 1.0, -1.0),
+        ( 1.0,  1.0),
+        (-1.0,  1.0)
+    ], dtype=float) * scale
+    return verts

@@ -2,7 +2,7 @@
 # Shows how the polygon target system integrates with FPP experiments
 import numpy as np
 import matplotlib.pyplot as plt
-from shapes.targets import triangle_equilateral, trapezoid_sym
+from shapes.targets import triangle_equilateral, trapezoid_sym, square
 from grid.highways import build_highways_weights, dijkstra_grid
 from geom.minkowski import gauge_unit_vector
 import math
@@ -154,10 +154,17 @@ if __name__ == "__main__":
     w_h_trap, w_v_trap = analyze_polygon_approximation(verts_trap, "Symmetric Trapezoid")
     export_weights_for_cpp(w_h_trap, w_v_trap, "trapezoid")
     
+    # Test square
+    print("\n3. Square Analysis")
+    verts_sq = square(scale=1.0)
+    w_h_sq, w_v_sq = analyze_polygon_approximation(verts_sq, "Square")
+    export_weights_for_cpp(w_h_sq, w_v_sq, "square")
+    
     print("\n" + "=" * 50)
     print("Integration complete!")
     print("Weight files exported for C++ integration:")
     print("- triangle_weights.txt")
     print("- trapezoid_weights.txt")
+    print("- square_weights.txt")
     print("\nThese can be used to initialize your C++ FPP experiments")
     print("with deterministic weights that target the polygon shapes.")
